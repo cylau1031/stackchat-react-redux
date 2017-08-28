@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 import MessagesList from './MessagesList';
+import NewChannelEntry from './NewChannelEntry';
 import store, { fetchMessages, fetchChannels } from '../store';
 
 
@@ -22,6 +23,7 @@ export default class Main extends Component {
         <main>
           <Switch>
             <Route path="/channels/:channelId" component={MessagesList} />
+            <Route path='/new-channel' component={NewChannelEntry} />
             <Redirect to="/channels/1" />
           </Switch>
         </main>
