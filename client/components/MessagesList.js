@@ -1,27 +1,20 @@
 import React, { Component } from 'react';
 import Message from './Message';
 import NewMessageEntry from './NewMessageEntry';
-import store from '../store';
+import {connect} from 'react-redux'
+import {fetchChannel} from '../store'
 
-export default class Messages extends Component {
-
-  constructor () {
-    super();
-    this.state = store.getState();
+class MessageList extends Component {
+  constructor (props) {
+    super(props)
   }
-
-  componentDidMount () {
-    this.unsubscribe = store.subscribe(() => this.setState(store.getState()));
-  }
-
-  componentWillUnmount () {
-    this.unsubscribe();
+  componentDidMount() {
+    this.props.handleCurrentChannel(Number(this.props.stuff.match.params.channelId))
   }
 
   render () {
-
-    const channelId = Number(this.props.match.params.channelId); // because it's a string "1", not a number!
-    const messages = this.state.messages;
+    const channelId = Number(this.props.stuff.match.params.channelId)
+    const messages = this.props.messages
     const filteredMessages = messages.filter(message => message.channelId === channelId);
 
     return (
@@ -34,3 +27,20 @@ export default class Messages extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    messages: state.messages
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    handleCurrentChannel: (id) => {
+      dispatch(fetchChannel(id))
+    }
+  }
+}
+
+const MessageListContainer = connect(mapStateToProps, mapDispatchToProps)(MessageList);
+export default MessageListContainer

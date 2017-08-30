@@ -4,13 +4,13 @@ import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 import MessagesList from './MessagesList';
 import NewChannelEntry from './NewChannelEntry';
-import store, { fetchMessages, fetchChannels } from '../store';
+import store, { fetchMessages, fetchChannels } from '../store/index';
+import { connect } from 'react-redux'
 
 
 export default class Main extends Component {
 
   componentDidMount () {
-
     store.dispatch(fetchMessages());
     store.dispatch(fetchChannels())
   }
@@ -23,7 +23,7 @@ export default class Main extends Component {
         <main>
           <Switch>
             <Route path="/channels/:channelId" component={MessagesList} />
-            <Route path='/new-channel' component={NewChannelEntry} />
+            <Route path="/new-channel" component={NewChannelEntry} />
             <Redirect to="/channels/1" />
           </Switch>
         </main>
